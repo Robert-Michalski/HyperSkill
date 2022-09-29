@@ -1,6 +1,5 @@
 package antifraud.model.Transaction;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +11,6 @@ public class TransactionResponse {
 
     public TransactionResponse(TransactionResponseValues result, String info){
         this.result = result;
-        this.info = info +", ";
+        this.info = info;
     }
 }

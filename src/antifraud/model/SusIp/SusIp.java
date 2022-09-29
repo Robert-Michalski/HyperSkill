@@ -1,9 +1,10 @@
 package antifraud.model.SusIp;
 
-import antifraud.repository.SusIpRepo;
+import antifraud.validation.ValidIp;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

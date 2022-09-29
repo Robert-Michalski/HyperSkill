@@ -45,7 +45,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable().headers().frameOptions().disable() // for Postman, the H2 console
                 .and()
                 .authorizeRequests() // manage access
-                .mvcMatchers(HttpMethod.DELETE, "/api/auth/user/").hasRole("ADMINISTRATOR")
+               // .mvcMatchers(HttpMethod.DELETE, "/api/auth/user/*").hasRole("ADMINISTRATOR")
                 .mvcMatchers(HttpMethod.POST, "/api/auth/user").permitAll()
                 .mvcMatchers("/actuator/shutdown").permitAll() // needs to run test
                 .mvcMatchers(HttpMethod.POST, "/api/antifraud/transaction").hasRole("MERCHANT")

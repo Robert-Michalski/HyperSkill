@@ -10,8 +10,10 @@ import antifraud.service.UserService.UserServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
@@ -38,10 +40,15 @@ public class UserController {
         return userService.showUsers();
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     @DeleteMapping({"/user/{username}"})
     public DeleteUserResponse deleteUser(@PathVariable String username) {
         return userService.deleteUser(username);
+    }
+
+    @DeleteMapping({"/user/"})
+    public DeleteUserResponse deleteUser() {
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
 
     @PreAuthorize("hasRole('ADMINISTRATOR')")

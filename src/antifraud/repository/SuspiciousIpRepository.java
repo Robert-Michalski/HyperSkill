@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SusIpRepo extends CrudRepository<SusIp, Long> {
+public interface SuspiciousIpRepository extends CrudRepository<SusIp, Long> {
 
     boolean existsByIp(String ip);
     int deleteByIp(String ip);

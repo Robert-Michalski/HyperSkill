@@ -8,7 +8,7 @@ import antifraud.model.User.Response.DeleteUserResponse;
 import antifraud.model.User.Response.UserResponse;
 import antifraud.model.User.User;
 import antifraud.model.User.UserRoles;
-import antifraud.repository.UserRepo;
+import antifraud.repository.UserRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,11 +25,11 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    UserRepo userRepo;
+    UserRepository userRepo;
     PasswordEncoder passwordEncoder;
 
     @Lazy
-    public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
     }
@@ -93,18 +93,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         User user = userRepo.findByUsername(request.getUsername());
         String message;
-        if (user.getRole() == UserRoles.ADMINISTRATOR){
+        if (user.getRole() == UserRoles.ADMINISTRATOR) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        if(request.getOperation()== Operations.UNLOCK){
+        if (request.getOperation() == Operations.UNLOCK) {
             user.setLocked(false);
-            message = "User "+user.getUsername()+" unlocked!";
-        }else {
+            message = "User " + user.getUsername() + " unlocked!";
+        } else {
             user.setLocked(true);
-            message = "User "+user.getUsername()+" locked!";
+            message = "User " + user.getUsername() + " locked!";
         }
         userRepo.save(user);
-            return new AccessResponse(message);
+        return new AccessResponse(message);
     }
 
     @Override

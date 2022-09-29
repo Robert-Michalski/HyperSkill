@@ -22,11 +22,11 @@ public class StolenCardServiceImpl implements StolenCardService {
 
     @Override
     public StolenCard saveCard(StolenCard card) {
-        if (cardRepository.existsByNumber(card.getNumber())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
-        if (!isValidCardNumber(card.getNumber())){
+        if(!isValidCardNumber(card.getNumber())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        if(cardRepository.existsByNumber(card.getNumber())){
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
         return cardRepository.save(card);
     }
@@ -34,13 +34,13 @@ public class StolenCardServiceImpl implements StolenCardService {
     @Override
     @Transactional
     public DeleteResponse deleteCardByNumber(String number) {
-        if (!cardRepository.existsByNumber(number)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        if (!isValidCardNumber(number)){
+        if(!isValidCardNumber(number)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        cardRepository.deleteStolenCardByNumber(number);
+        if(!cardRepository.existsByNumber(number)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        System.out.println(cardRepository.deleteStolenCardByNumber(number));
         return new DeleteResponse("Card " + number + " successfully removed!");
     }
 
@@ -50,18 +50,18 @@ public class StolenCardServiceImpl implements StolenCardService {
         cardRepository.findAll().forEach(allCards::add);
         return allCards;
     }
-
     private boolean isValidCardNumber(String number) {
-        int digits = number.length();
+        int len = number.length();
+        int[] ints = number.chars().map(c -> c - '0').toArray();
         int sum = 0;
-        for (int i = 0; i < digits; i++) {
+        for (int i = 0; i < len; i++) {
             if (i % 2 == 0) {
-                number.replace(number.charAt(i), (char) (number.charAt(i) * 2));
+                ints[i] *= 2;
+                if (ints[i] > 9) {
+                    ints[i] -= 9;
+                }
             }
-            if (number.charAt(i) > 9) {
-                number.replace(number.charAt(i), (char) (number.charAt(i) - 9));
-            }
-            sum += number.charAt(i);
+            sum += ints[i];
         }
         return sum % 10 == 0;
     }

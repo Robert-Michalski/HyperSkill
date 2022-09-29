@@ -3,9 +3,12 @@ package antifraud.controller;
 import antifraud.model.DeleteResponse;
 import antifraud.model.SusIp.SusIp;
 import antifraud.service.SusIpService.SusIpService;
+import antifraud.validation.ValidIp;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
@@ -18,7 +21,7 @@ public class SuspiciousIpController {
     }
 
     @PostMapping("/suspicious-ip")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public SusIp saveSuspiciousIp(@RequestBody SusIp ip){
         return ipService.saveIp(ip);
     }

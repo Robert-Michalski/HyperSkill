@@ -14,6 +14,7 @@ public class RegistrationExceptionHandler {
             NullPointerException.class
     })
     public ResponseEntity<ErrorDTO> handleEmptyUserInput() {
+        System.out.println("null");
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
